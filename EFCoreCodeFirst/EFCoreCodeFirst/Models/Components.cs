@@ -1,11 +1,33 @@
-﻿namespace EFCoreCodeFirst.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
+namespace EFCoreCodeFirst.Models;
+
+[Table("Components")]
 public class Components
 {
+    [Key, Column(TypeName = "char(10)")]
     public string Code { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public int ComponentManufacturersId { get; set; }
-    public int ComponentTypesId { get; set; }
     
+    [MaxLength(300)]
+    public string Name { get; set; } = string.Empty;
+    
+    public string Description { get; set; } = string.Empty;
+    
+    public int ComponentManufacturersId { get; set; }
+    
+    public int ComponentTypesId { get; set; }
+
+    // jako tabela asocjacyjna
+    [ForeignKey(nameof(ComponentManufacturersId))]
+    public ComponentManufacturers ComponentManufacturers { get; set; } = null!;
+    
+    [ForeignKey(nameof(ComponentTypesId))]
+    public ComponentTypes ComponentTypes { get; set; } = null!;
+    
+
+    // dla tabeli asocjacyjnej
+    public IEnumerable<PCComponents> PcComponents { get; set; } = [];
+
 }
