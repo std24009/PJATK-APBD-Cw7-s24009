@@ -12,11 +12,14 @@ public class PCs
     [MaxLength(50)]
     public string Name { get; set; } = string.Empty;
     
-    [MaxLength(5)]
+    [Column(TypeName = "float(5)")]
     public float Weight { get; set; }
     
     public int Warranty { get; set; }
+    
+    [Column(TypeName = "datetime")]
     public DateTime CreatedAt { get; set; }
+    
     public int Stock { get; set; }
 
     public IEnumerable<PCComponents> PcComponents { get; set; } = [];
