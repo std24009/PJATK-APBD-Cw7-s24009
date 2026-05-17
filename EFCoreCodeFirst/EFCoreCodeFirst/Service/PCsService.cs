@@ -101,4 +101,25 @@ public class PCsService(DatabaseContext ctx) : IPCsService
             throw new NotFoundException($"PC with id {id} not found");
         }
     }
+
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken)
+    {
+        /*var pc = await ctx.PCs.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        if (pc is null)
+        {
+            throw new NotFoundException($"PC with id {id} not found");
+        }
+
+        ctx.PCs.Remove(pc);
+        await ctx.SaveChangesAsync(cancellationToken);*/
+
+        int affectedRows = await ctx.PCs
+            .Where(e => e.Id == id)
+            .ExecuteDeleteAsync(cancellationToken);
+        
+        if (affectedRows == 0)
+        {
+            throw new NotFoundException($"PC with id {id} not found");
+        }
+    }
 }
