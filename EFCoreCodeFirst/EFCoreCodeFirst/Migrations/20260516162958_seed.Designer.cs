@@ -13,7 +13,7 @@ namespace EFCoreCodeFirst.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20260516162958_seed")]
-    partial class seed
+    partial class Seed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
