@@ -1,10 +1,11 @@
 ﻿namespace EFCoreCodeFirst.DTOs;
 
-public record PCsResponse(
+public record PCsDetailsResponse(
     int Id,
     string Name,
     float Weight,
     int Warranty,
     DateTime CreatedAt,
-    int Stock
-);
+    int Stock,
+    IEnumerable<PCComponentDetailsResponse> Components
+    );

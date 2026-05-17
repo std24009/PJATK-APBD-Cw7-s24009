@@ -1,21 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EFCoreCodeFirst.Exceptions;
+using EFCoreCodeFirst.Service;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EFCoreCodeFirst.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PCsController : ControllerBase
+public class PCsController(IPCsService service) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        return Ok();
+        return Ok(await service.GetAllAsync(cancellationToken));
     }
     
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
+    [HttpGet("{id:int}/components")]
+    public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken)
     {
-        return Ok();
+        try
+        {
+            return Ok(await service.GetByIdAsync(id, cancellationToken));
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
     
     [HttpPost]
