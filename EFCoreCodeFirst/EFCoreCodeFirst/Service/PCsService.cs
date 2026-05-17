@@ -70,4 +70,35 @@ public class PCsService(DatabaseContext ctx) : IPCsService
 
         return new PCsResponse(pc.Id, pc.Name, pc.Weight, pc.Warranty, pc.CreatedAt, pc.Stock);
     }
+
+    public async Task UpdateAsync(int id, UpdatePCsRequest request, CancellationToken cancellationToken)
+    {
+        /*var pc = await ctx.PCs.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        if (pc is null)
+        {
+            throw new NotFoundException($"PC with id {id} not found");
+        }
+
+        pc.Name = request.Name;
+        pc.Weight = request.Weight;
+        pc.Warranty = request.Warranty;
+        pc.CreatedAt = request.CreatedAt;
+        pc.Stock = request.Stock;
+        await ctx.SaveChangesAsync(cancellationToken);*/
+
+        int affectedRows = await ctx.PCs.Where(e => e.Id == id)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(e => e.Name, request.Name)
+                .SetProperty(e => e.Weight, request.Weight)
+                .SetProperty(e => e.Warranty, request.Warranty)
+                .SetProperty(e => e.CreatedAt, request.CreatedAt)
+                .SetProperty(e => e.Stock, request.Stock)
+                , cancellationToken
+            );
+
+        if (affectedRows == 0)
+        {
+            throw new NotFoundException($"PC with id {id} not found");
+        }
+    }
 }
