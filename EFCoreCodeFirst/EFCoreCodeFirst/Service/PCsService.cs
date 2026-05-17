@@ -1,6 +1,7 @@
 ﻿using EFCoreCodeFirst.DTOs;
 using EFCoreCodeFirst.Exceptions;
 using EFCoreCodeFirst.Infrastructure;
+using EFCoreCodeFirst.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreCodeFirst.Service;
@@ -51,5 +52,22 @@ public class PCsService(DatabaseContext ctx) : IPCsService
                 )).ToList()
             )).FirstOrDefaultAsync(cancellationToken)
             ?? throw new NotFoundException($"PC with id {id} not found");
+    }
+
+    public async Task<PCsResponse> AddAsync(CreatePCsRequest request, CancellationToken cancellationToken)
+    {
+        var pc = new PCs
+        {
+            Name = request.Name,
+            Weight = request.Weight,
+            Warranty = request.Warranty,
+            CreatedAt = request.CreatedAt,
+            Stock = request.Stock
+        };
+
+        ctx.Add(pc);
+        await ctx.SaveChangesAsync(cancellationToken);
+
+        return new PCsResponse(pc.Id, pc.Name, pc.Weight, pc.Warranty, pc.CreatedAt, pc.Stock);
     }
 }

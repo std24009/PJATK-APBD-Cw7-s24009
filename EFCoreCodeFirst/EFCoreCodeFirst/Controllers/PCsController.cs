@@ -1,4 +1,5 @@
-﻿using EFCoreCodeFirst.Exceptions;
+﻿using EFCoreCodeFirst.DTOs;
+using EFCoreCodeFirst.Exceptions;
 using EFCoreCodeFirst.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,9 +29,10 @@ public class PCsController(IPCsService service) : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> Add()
+    public async Task<IActionResult> Add([FromBody] CreatePCsRequest request, CancellationToken cancellationToken)
     {
-        return Ok();
+        var pc = await service.AddAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = pc.Id }, pc);
     }
     
     [HttpPut("{id:int}")]
