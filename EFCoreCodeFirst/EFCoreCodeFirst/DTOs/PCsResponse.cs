@@ -1,6 +1,6 @@
 ﻿namespace EFCoreCodeFirst.DTOs;
 
-public record PCsResponse(
+public record PCsAllResponse(
     int Id,
     string Name,
     float Weight,

@@ -4,6 +4,7 @@ using EFCoreCodeFirst.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCoreCodeFirst.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260516200606_nextSeed")]
+    partial class nextSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,13 +198,13 @@ namespace EFCoreCodeFirst.Migrations
                         },
                         new
                         {
-                            PCId = 1,
+                            PCId = 2,
                             ComponentCode = "GPU0000001",
                             Amount = 1
                         },
                         new
                         {
-                            PCId = 1,
+                            PCId = 3,
                             ComponentCode = "RAM0000001",
                             Amount = 2
                         });
@@ -294,7 +297,7 @@ namespace EFCoreCodeFirst.Migrations
                         .IsRequired();
 
                     b.HasOne("EFCoreCodeFirst.Models.PCs", "PCs")
-                        .WithMany("Components")
+                        .WithMany("PcComponents")
                         .HasForeignKey("PCId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -321,7 +324,7 @@ namespace EFCoreCodeFirst.Migrations
 
             modelBuilder.Entity("EFCoreCodeFirst.Models.PCs", b =>
                 {
-                    b.Navigation("Components");
+                    b.Navigation("PcComponents");
                 });
 #pragma warning restore 612, 618
         }
